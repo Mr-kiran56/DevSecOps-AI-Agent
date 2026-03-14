@@ -16,13 +16,23 @@ const NAV_ITEMS = [
 ];
 
 const DashboardSidebar = () => {
-  const { activeRepo, setActiveRepo } = useRepo();
+  const { activeRepo, setActiveRepo, recentRepos, addRecentRepo } = useRepo();
   const navigate = useNavigate();
+
+  const handleSwitchRepo = (repo: typeof activeRepo) => {
+    if (repo && repo.id !== activeRepo?.id) {
+      setActiveRepo(repo);
+      addRecentRepo(repo);
+    }
+  };
 
   return (
     <aside className="w-[220px] min-h-screen flex flex-col border-r border-[var(--border-dim)]" style={{ background: 'var(--bg-panel)' }}>
-      {/* Repo info */}
+      {/* Active Repo */}
       <div className="p-4 border-b border-[var(--border-dim)]">
+        <p className="text-[10px] font-mono uppercase tracking-wider mb-2" style={{ color: 'var(--text-dim)' }}>
+          Active Repo
+        </p>
         <p className="font-mono text-sm font-medium text-foreground truncate">{activeRepo?.name}</p>
         <div className="flex items-center gap-2 mt-1.5">
           <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-muted" style={{ color: 'var(--text-secondary)' }}>
@@ -31,10 +41,56 @@ const DashboardSidebar = () => {
           <span className="w-1.5 h-1.5 rounded-full bg-cyber-green animate-pulse-dot" />
           <span className="text-[10px] font-mono" style={{ color: 'var(--accent-green)' }}>ONLINE</span>
         </div>
+        <div className="flex items-center gap-3 mt-2">
+          <span className="text-[10px] font-mono" style={{ color: 'var(--accent-red)' }}>
+            {activeRepo?.vulnCount} vulns
+          </span>
+          <span className="text-[10px] font-mono" style={{ color: 'var(--text-dim)' }}>
+            scanned {activeRepo?.lastScan}
+          </span>
+        </div>
+      </div>
+
+      {/* Recent Repos */}
+      <div className="p-4 border-b border-[var(--border-dim)]">
+        <p className="text-[10px] font-mono uppercase tracking-wider mb-2" style={{ color: 'var(--text-dim)' }}>
+          Recent Repos ({recentRepos.length})
+        </p>
+        {recentRepos.length === 0 ? (
+          <p className="text-[10px] font-mono italic" style={{ color: 'var(--text-dim)' }}>No recent repos</p>
+        ) : (
+          <div className="space-y-1">
+            {recentRepos.map(repo => (
+              <button
+                key={repo.id}
+                onClick={() => handleSwitchRepo(repo)}
+                className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-left transition-all text-[11px] font-mono
+                  ${repo.id === activeRepo?.id
+                    ? 'bg-[var(--bg-card)] border border-[var(--border-glow)]'
+                    : 'hover:bg-[var(--bg-card)] border border-transparent'
+                  }`}
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{
+                    background: repo.status === 'MONITORING' ? 'var(--accent-green)' : 'var(--text-dim)',
+                  }}
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-foreground">{repo.name}</p>
+                  <div className="flex items-center gap-2">
+                    <span style={{ color: 'var(--text-dim)' }}>{repo.branch}</span>
+                    <span style={{ color: 'var(--accent-red)', fontSize: '9px' }}>{repo.vulnCount}v</span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-2">
+      <nav className="flex-1 py-2 overflow-y-auto">
         {NAV_ITEMS.map(item => (
           <button
             key={item.id}
