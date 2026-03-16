@@ -41,6 +41,21 @@ const SetupPage = () => {
       lastScan: 'just now',
       mlShield,
       ragMemory,
+      language: 'Python',
+      stars: Math.floor(Math.random() * 500),
+      commits: Math.floor(Math.random() * 2000) + 100,
+      contributors: Math.floor(Math.random() * 20) + 1,
+      openPRs: Math.floor(Math.random() * 10),
+      size: `${(Math.random() * 100).toFixed(1)} MB`,
+      lastActivity: 'just now',
+      description: 'Repository connected for security monitoring',
+      healthScore: Math.floor(Math.random() * 30) + 70,
+      vulnBreakdown: {
+        critical: Math.floor(Math.random() * 5),
+        high: Math.floor(Math.random() * 10),
+        medium: Math.floor(Math.random() * 20),
+        low: Math.floor(Math.random() * 15),
+      },
     };
     setActiveRepo(repo);
     addRecentRepo(repo);
