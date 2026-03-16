@@ -8,6 +8,21 @@ export interface Repo {
   lastScan: string;
   mlShield: boolean;
   ragMemory: boolean;
+  language: string;
+  stars: number;
+  commits: number;
+  contributors: number;
+  openPRs: number;
+  size: string;
+  lastActivity: string;
+  description: string;
+  healthScore: number;
+  vulnBreakdown: {
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+  };
 }
 
 export interface ChatMessage {
