@@ -53,9 +53,17 @@ const DashboardSidebar = () => {
 
       {/* Recent Repos */}
       <div className="p-4 border-b border-[var(--border-dim)]">
-        <p className="text-[10px] font-mono uppercase tracking-wider mb-2" style={{ color: 'var(--text-dim)' }}>
-          Recent Repos ({recentRepos.length})
-        </p>
+        <button
+          onClick={() => navigate('/repos')}
+          className="flex items-center justify-between w-full mb-2 group"
+        >
+          <p className="text-[10px] font-mono uppercase tracking-wider group-hover:text-cyber-cyan transition-colors" style={{ color: 'var(--text-dim)' }}>
+            Recent Repos ({recentRepos.length})
+          </p>
+          <span className="text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--accent-cyan)' }}>
+            View All →
+          </span>
+        </button>
         {recentRepos.length === 0 ? (
           <p className="text-[10px] font-mono italic" style={{ color: 'var(--text-dim)' }}>No recent repos</p>
         ) : (
