@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRepo } from '@/context/RepoContext';
 import BackgroundAnimation from '@/components/shared/BackgroundAnimation';
 import BootSequence from '@/components/setup/BootSequence';
+import { Shield, GitBranch, ArrowRight } from 'lucide-react';
 import type { Repo } from '@/data/mockData';
 
 const SetupPage = () => {
@@ -69,13 +70,13 @@ const SetupPage = () => {
   };
 
   const inputClass = (field: string) =>
-    `w-full px-4 py-3 rounded-lg font-mono text-sm transition-all duration-200 outline-none
-     bg-[var(--bg-card)] border ${errors[field] ? 'border-cyber-red shadow-[0_0_12px_rgba(255,51,102,0.3)]' : 'border-[var(--border-dim)]'}
+    `w-full px-3.5 py-2.5 rounded-lg text-sm transition-all duration-150 outline-none
+     bg-secondary border ${errors[field] ? 'border-destructive ring-2 ring-destructive/20' : 'border-border'}
      text-foreground placeholder:text-muted-foreground
-     focus:border-[var(--accent-cyan)] focus:shadow-[0_0_12px_rgba(0,212,255,0.2)]`;
+     focus:border-primary focus:ring-2 focus:ring-primary/20`;
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-base)' }}>
+    <div className="relative min-h-screen flex items-center justify-center bg-background">
       <BackgroundAnimation />
       
       <AnimatePresence>
@@ -83,21 +84,21 @@ const SetupPage = () => {
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative z-10 w-full max-w-lg mx-4"
+        initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
+        animate={{ opacity: 1, y: 0, filter: 'blur(0)' }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-full max-w-md mx-4"
       >
-        <div className="glass-card p-8">
+        <div className="bg-card border border-border rounded-xl p-8 shadow-2xl shadow-black/20">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-3 mb-3">
-              <span className="text-3xl" style={{ color: 'var(--accent-cyan)', filter: 'drop-shadow(0 0 8px rgba(0,212,255,0.5))' }}>⬡</span>
-              <h1 className="text-2xl font-display font-bold tracking-tight text-foreground">
-                DevSecOps AI Agent
-              </h1>
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 mb-4">
+              <Shield className="w-5 h-5 text-primary" />
             </div>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <h1 className="text-xl font-semibold tracking-tight text-foreground">
+              DevSecOps Agent
+            </h1>
+            <p className="text-sm text-muted-foreground mt-1.5">
               Connect a repository to begin monitoring
             </p>
           </div>
@@ -105,8 +106,8 @@ const SetupPage = () => {
           {/* Form */}
           <div className="space-y-4">
             <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider mb-2" style={{ color: 'var(--text-dim)' }}>
-                GitHub Repository URL
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                Repository URL
               </label>
               <input
                 className={inputClass('url')}
@@ -115,62 +116,60 @@ const SetupPage = () => {
                 placeholder="https://github.com/user/repo"
               />
             </div>
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider mb-2" style={{ color: 'var(--text-dim)' }}>
-                Repository Name
-              </label>
-              <input
-                className={inputClass('name')}
-                value={repoName}
-                onChange={e => { setRepoName(e.target.value); setErrors(p => ({ ...p, name: false })); }}
-                placeholder="my-repo"
-              />
-            </div>
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider mb-2" style={{ color: 'var(--text-dim)' }}>
-                Branch
-              </label>
-              <input
-                className={inputClass('branch')}
-                value={branch}
-                onChange={e => { setBranch(e.target.value); setErrors(p => ({ ...p, branch: false })); }}
-                placeholder="main"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                  Repository name
+                </label>
+                <input
+                  className={inputClass('name')}
+                  value={repoName}
+                  onChange={e => { setRepoName(e.target.value); setErrors(p => ({ ...p, name: false })); }}
+                  placeholder="my-repo"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                  Branch
+                </label>
+                <input
+                  className={inputClass('branch')}
+                  value={branch}
+                  onChange={e => { setBranch(e.target.value); setErrors(p => ({ ...p, branch: false })); }}
+                  placeholder="main"
+                />
+              </div>
             </div>
 
             {/* Toggles */}
-            <div className="flex gap-6 pt-2">
-              <label className="flex items-center gap-2 cursor-pointer text-sm" style={{ color: 'var(--text-secondary)' }}>
-                <button
-                  type="button"
-                  onClick={() => setMlShield(!mlShield)}
-                  className={`w-10 h-5 rounded-full transition-colors relative ${mlShield ? 'bg-cyber-cyan/30' : 'bg-muted'}`}
-                >
-                  <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${mlShield ? 'left-5 bg-cyber-cyan shadow-[0_0_8px_rgba(0,212,255,0.5)]' : 'left-0.5 bg-muted-foreground'}`} />
-                </button>
-                ML Shield
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer text-sm" style={{ color: 'var(--text-secondary)' }}>
-                <button
-                  type="button"
-                  onClick={() => setRagMemory(!ragMemory)}
-                  className={`w-10 h-5 rounded-full transition-colors relative ${ragMemory ? 'bg-cyber-purple/30' : 'bg-muted'}`}
-                >
-                  <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${ragMemory ? 'left-5 bg-cyber-purple shadow-[0_0_8px_rgba(124,58,237,0.5)]' : 'left-0.5 bg-muted-foreground'}`} />
-                </button>
-                RAG Memory
-              </label>
+            <div className="flex gap-6 pt-1">
+              {[
+                { label: 'ML Shield', value: mlShield, onChange: () => setMlShield(!mlShield) },
+                { label: 'RAG Memory', value: ragMemory, onChange: () => setRagMemory(!ragMemory) },
+              ].map(toggle => (
+                <label key={toggle.label} className="flex items-center gap-2.5 cursor-pointer text-sm text-muted-foreground">
+                  <button
+                    type="button"
+                    onClick={toggle.onChange}
+                    className={`w-9 h-5 rounded-full transition-colors relative ${toggle.value ? 'bg-primary' : 'bg-muted'}`}
+                  >
+                    <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all duration-200 ${toggle.value ? 'left-[18px]' : 'left-0.5'}`} />
+                  </button>
+                  {toggle.label}
+                </label>
+              ))}
             </div>
 
             {/* Start Button */}
             <button
               onClick={handleStart}
-              className="w-full mt-4 py-3.5 rounded-lg font-display font-bold text-sm uppercase tracking-wider
-                         bg-gradient-to-r from-cyber-cyan to-cyber-purple text-primary-foreground
-                         hover:translate-y-[-1px] transition-all duration-200
-                         animate-glow-pulse"
+              className="w-full mt-2 py-2.5 rounded-lg font-medium text-sm
+                         bg-primary text-primary-foreground
+                         hover:brightness-110 active:scale-[0.98] transition-all duration-150
+                         flex items-center justify-center gap-2"
             >
-              ▶ START MONITORING
+              Start monitoring
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -178,23 +177,24 @@ const SetupPage = () => {
         {/* Recently Monitored */}
         {recentRepos.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-6"
+            transition={{ delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-5"
           >
-            <h3 className="text-[11px] font-mono uppercase tracking-wider mb-3" style={{ color: 'var(--text-dim)' }}>
-              Recently Monitored
+            <h3 className="text-xs font-medium text-muted-foreground mb-2.5">
+              Recent repositories
             </h3>
             <div className="flex gap-2 flex-wrap">
               {recentRepos.map(repo => (
                 <button
                   key={repo.id}
                   onClick={() => handleRecentClick(repo)}
-                  className="glass-card px-3 py-1.5 text-xs font-mono flex items-center gap-2 hover:border-[var(--border-glow)] transition-all"
+                  className="bg-card border border-border rounded-lg px-3 py-1.5 text-xs font-mono flex items-center gap-2
+                             hover:border-primary/30 hover:bg-secondary active:scale-[0.97] transition-all duration-150"
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${repo.status === 'MONITORING' ? 'bg-cyber-green animate-pulse-dot' : 'bg-cyber-yellow'}`} />
-                  {repo.name}
+                  <span className={`w-1.5 h-1.5 rounded-full ${repo.status === 'MONITORING' ? 'bg-status-success animate-pulse-subtle' : 'bg-status-warning'}`} />
+                  <span className="text-foreground">{repo.name}</span>
                 </button>
               ))}
             </div>

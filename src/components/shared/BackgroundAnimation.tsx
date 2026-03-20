@@ -1,35 +1,31 @@
-import { useMemo } from 'react';
-
 const BackgroundAnimation = () => {
-  const particles = useMemo(() => {
-    return Array.from({ length: 40 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      size: 2 + Math.random() * 2,
-      delay: Math.random() * 5,
-      duration: 6 + Math.random() * 8,
-      color: Math.random() > 0.5 ? 'var(--accent-cyan)' : 'var(--accent-purple)',
-    }));
-  }, []);
-
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-      {particles.map(p => (
-        <div
-          key={p.id}
-          className="absolute rounded-full"
-          style={{
-            left: `${p.left}%`,
-            top: `${p.top}%`,
-            width: p.size,
-            height: p.size,
-            backgroundColor: p.color,
-            opacity: 0.2,
-            animation: `float-particle ${p.duration}s ease-in-out ${p.delay}s infinite`,
-          }}
-        />
-      ))}
+      {/* Subtle gradient orbs - very muted */}
+      <div
+        className="absolute w-[600px] h-[600px] rounded-full opacity-[0.03]"
+        style={{
+          background: 'radial-gradient(circle, hsl(25 95% 58%) 0%, transparent 70%)',
+          top: '-200px',
+          right: '-100px',
+        }}
+      />
+      <div
+        className="absolute w-[500px] h-[500px] rounded-full opacity-[0.02]"
+        style={{
+          background: 'radial-gradient(circle, hsl(210 80% 56%) 0%, transparent 70%)',
+          bottom: '-150px',
+          left: '-100px',
+        }}
+      />
+      {/* Fine grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `linear-gradient(hsl(210 20% 92%) 1px, transparent 1px), linear-gradient(90deg, hsl(210 20% 92%) 1px, transparent 1px)`,
+          backgroundSize: '48px 48px',
+        }}
+      />
     </div>
   );
 };
