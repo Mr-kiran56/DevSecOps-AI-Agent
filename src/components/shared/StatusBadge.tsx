@@ -3,30 +3,30 @@ interface StatusBadgeProps {
 }
 
 const colorMap: Record<string, string> = {
-  ACTIVE: 'bg-cyber-green/20 text-cyber-green',
-  RUNNING: 'bg-cyber-cyan/20 text-cyber-cyan',
-  ENABLED: 'bg-cyber-green/20 text-cyber-green',
-  ONLINE: 'bg-cyber-green/20 text-cyber-green',
-  NORMAL: 'bg-cyber-green/20 text-cyber-green',
-  IDLE: 'bg-cyber-yellow/20 text-cyber-yellow',
-  WARNING: 'bg-cyber-yellow/20 text-cyber-yellow',
-  CRITICAL: 'bg-cyber-red/20 text-cyber-red',
+  ACTIVE: 'bg-status-success/10 text-status-success',
+  RUNNING: 'bg-status-info/10 text-status-info',
+  ENABLED: 'bg-status-success/10 text-status-success',
+  ONLINE: 'bg-status-success/10 text-status-success',
+  NORMAL: 'bg-status-success/10 text-status-success',
+  IDLE: 'bg-status-warning/10 text-status-warning',
+  WARNING: 'bg-status-warning/10 text-status-warning',
+  CRITICAL: 'bg-status-error/10 text-status-error',
 };
 
 const dotMap: Record<string, string> = {
-  ACTIVE: 'bg-cyber-green',
-  RUNNING: 'bg-cyber-cyan',
-  ENABLED: 'bg-cyber-green',
-  ONLINE: 'bg-cyber-green',
-  NORMAL: 'bg-cyber-green',
-  IDLE: 'bg-cyber-yellow',
-  WARNING: 'bg-cyber-yellow',
-  CRITICAL: 'bg-cyber-red',
+  ACTIVE: 'bg-status-success',
+  RUNNING: 'bg-status-info',
+  ENABLED: 'bg-status-success',
+  ONLINE: 'bg-status-success',
+  NORMAL: 'bg-status-success',
+  IDLE: 'bg-status-warning',
+  WARNING: 'bg-status-warning',
+  CRITICAL: 'bg-status-error',
 };
 
 const StatusBadge = ({ status }: StatusBadgeProps) => (
-  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-medium uppercase tracking-wider ${colorMap[status] || 'bg-muted text-muted-foreground'}`}>
-    <span className={`w-1.5 h-1.5 rounded-full animate-pulse-dot ${dotMap[status] || 'bg-muted-foreground'}`} />
+  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-mono font-medium tracking-wide ${colorMap[status] || 'bg-muted text-muted-foreground'}`}>
+    <span className={`w-1.5 h-1.5 rounded-full animate-pulse-subtle ${dotMap[status] || 'bg-muted-foreground'}`} />
     {status}
   </span>
 );

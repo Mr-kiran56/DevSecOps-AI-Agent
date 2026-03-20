@@ -5,40 +5,41 @@ import { MOCK_REPOS } from '@/data/mockData';
 import type { Repo } from '@/data/mockData';
 import BackgroundAnimation from '@/components/shared/BackgroundAnimation';
 import StatusBadge from '@/components/shared/StatusBadge';
+import { ArrowLeft, Plus, GitBranch, Users, Star, GitPullRequest as PRIcon } from 'lucide-react';
 
 const LANG_COLORS: Record<string, string> = {
-  Python: 'var(--accent-cyan)',
-  TypeScript: 'var(--accent-purple)',
-  Go: 'var(--accent-green)',
-  Rust: 'var(--accent-red)',
-  JavaScript: 'var(--accent-yellow)',
+  Python: 'hsl(210 80% 56%)',
+  TypeScript: 'hsl(210 90% 60%)',
+  Go: 'hsl(190 80% 45%)',
+  Rust: 'hsl(25 95% 58%)',
+  JavaScript: 'hsl(38 92% 50%)',
 };
 
 const HealthRing = ({ score }: { score: number }) => {
-  const r = 20;
+  const r = 18;
   const c = 2 * Math.PI * r;
   const offset = c - (score / 100) * c;
-  const color = score >= 85 ? 'var(--accent-green)' : score >= 60 ? 'var(--accent-yellow)' : 'var(--accent-red)';
+  const color = score >= 85 ? 'hsl(142 60% 45%)' : score >= 60 ? 'hsl(38 92% 50%)' : 'hsl(0 72% 58%)';
 
   return (
-    <div className="relative w-14 h-14 flex items-center justify-center">
-      <svg width="56" height="56" className="rotate-[-90deg]">
-        <circle cx="28" cy="28" r={r} fill="none" stroke="var(--border-dim)" strokeWidth="3" />
+    <div className="relative w-12 h-12 flex items-center justify-center">
+      <svg width="48" height="48" className="rotate-[-90deg]">
+        <circle cx="24" cy="24" r={r} fill="none" stroke="hsl(220 12% 14%)" strokeWidth="2.5" />
         <circle
-          cx="28" cy="28" r={r} fill="none" stroke={color} strokeWidth="3"
+          cx="24" cy="24" r={r} fill="none" stroke={color} strokeWidth="2.5"
           strokeDasharray={c} strokeDashoffset={offset} strokeLinecap="round"
           style={{ transition: 'stroke-dashoffset 1s ease' }}
         />
       </svg>
-      <span className="absolute text-xs font-mono font-bold text-foreground">{score}</span>
+      <span className="absolute text-[11px] font-mono font-semibold text-foreground">{score}</span>
     </div>
   );
 };
 
 const VulnBar = ({ label, count, max, color }: { label: string; count: number; max: number; color: string }) => (
   <div className="flex items-center gap-2">
-    <span className="text-[10px] font-mono w-14 text-right" style={{ color: 'var(--text-dim)' }}>{label}</span>
-    <div className="flex-1 h-1.5 rounded-full bg-[var(--bg-card)]">
+    <span className="text-[10px] w-14 text-right text-muted-foreground">{label}</span>
+    <div className="flex-1 h-1 rounded-full bg-secondary">
       <motion.div
         initial={{ width: 0 }}
         animate={{ width: `${Math.min((count / max) * 100, 100)}%` }}
@@ -47,7 +48,7 @@ const VulnBar = ({ label, count, max, color }: { label: string; count: number; m
         style={{ background: color }}
       />
     </div>
-    <span className="text-[10px] font-mono w-6" style={{ color }}>{count}</span>
+    <span className="text-[10px] font-mono w-5 tabular-nums" style={{ color }}>{count}</span>
   </div>
 );
 
@@ -56,10 +57,11 @@ const RepoCard = ({ repo, index, onSelect }: { repo: Repo; index: number; onSele
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
-      className="glass-card p-5 hover:border-[var(--border-glow)] transition-all cursor-pointer group"
+      initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0)' }}
+      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      className="bg-card border border-border rounded-xl p-5 hover:border-primary/20 transition-all duration-200 cursor-pointer group
+                 shadow-sm hover:shadow-md hover:shadow-black/10"
       onClick={() => onSelect(repo)}
     >
       {/* Header */}
@@ -67,66 +69,61 @@ const RepoCard = ({ repo, index, onSelect }: { repo: Repo; index: number; onSele
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full flex-shrink-0"
-              style={{ background: repo.status === 'MONITORING' ? 'var(--accent-green)' : 'var(--text-dim)' }} />
-            <h3 className="font-mono text-sm font-bold text-foreground truncate group-hover:text-cyber-cyan transition-colors">
+              style={{ background: repo.status === 'MONITORING' ? 'hsl(142 60% 45%)' : 'hsl(215 12% 48%)' }} />
+            <h3 className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
               {repo.name}
             </h3>
           </div>
-          <p className="text-[11px] line-clamp-1" style={{ color: 'var(--text-dim)' }}>{repo.description}</p>
+          <p className="text-[11px] text-muted-foreground line-clamp-1">{repo.description}</p>
         </div>
         <HealthRing score={repo.healthScore} />
       </div>
 
       {/* Tags Row */}
-      <div className="flex flex-wrap items-center gap-2 mb-3">
-        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-muted" style={{ color: 'var(--text-secondary)' }}>
-          ⎇ {repo.branch}
+      <div className="flex flex-wrap items-center gap-1.5 mb-3">
+        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-secondary text-muted-foreground flex items-center gap-1">
+          <GitBranch className="w-2.5 h-2.5" />
+          {repo.branch}
         </span>
-        <span className="flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded bg-muted">
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: LANG_COLORS[repo.language] || 'var(--text-dim)' }} />
-          <span style={{ color: 'var(--text-secondary)' }}>{repo.language}</span>
+        <span className="flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-secondary">
+          <span className="w-1.5 h-1.5 rounded-full" style={{ background: LANG_COLORS[repo.language] || 'hsl(215 12% 48%)' }} />
+          <span className="text-muted-foreground">{repo.language}</span>
         </span>
         <StatusBadge status={repo.status === 'MONITORING' ? 'ACTIVE' : 'IDLE'} />
-        {repo.mlShield && <span className="text-[9px] font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(0,212,255,0.1)', color: 'var(--accent-cyan)' }}>ML SHIELD</span>}
-        {repo.ragMemory && <span className="text-[9px] font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(124,58,237,0.1)', color: 'var(--accent-purple)' }}>RAG</span>}
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-4 gap-3 mb-3 py-2 border-y border-[var(--border-dim)]">
+      <div className="grid grid-cols-4 gap-3 mb-3 py-2.5 border-y border-border">
         {[
-          { label: 'Commits', value: repo.commits.toLocaleString() },
-          { label: 'Contributors', value: repo.contributors },
-          { label: 'Stars', value: repo.stars },
-          { label: 'Open PRs', value: repo.openPRs },
+          { icon: GitBranch, label: 'Commits', value: repo.commits.toLocaleString() },
+          { icon: Users, label: 'Team', value: repo.contributors },
+          { icon: Star, label: 'Stars', value: repo.stars },
+          { icon: PRIcon, label: 'PRs', value: repo.openPRs },
         ].map(s => (
           <div key={s.label} className="text-center">
-            <p className="text-sm font-mono font-bold text-foreground">{s.value}</p>
-            <p className="text-[9px] font-mono uppercase" style={{ color: 'var(--text-dim)' }}>{s.label}</p>
+            <p className="text-sm font-mono font-semibold text-foreground tabular-nums">{s.value}</p>
+            <p className="text-[9px] text-muted-foreground mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
 
       {/* Vulnerability Breakdown */}
       <div className="space-y-1.5">
-        <p className="text-[10px] font-mono uppercase tracking-wider" style={{ color: 'var(--text-dim)' }}>
+        <p className="text-[10px] font-medium text-muted-foreground">
           Vulnerabilities ({repo.vulnCount})
         </p>
-        <VulnBar label="Critical" count={repo.vulnBreakdown.critical} max={maxVuln} color="var(--accent-red)" />
-        <VulnBar label="High" count={repo.vulnBreakdown.high} max={maxVuln} color="var(--accent-yellow)" />
-        <VulnBar label="Medium" count={repo.vulnBreakdown.medium} max={maxVuln} color="var(--accent-cyan)" />
-        <VulnBar label="Low" count={repo.vulnBreakdown.low} max={maxVuln} color="var(--accent-green)" />
+        <VulnBar label="Critical" count={repo.vulnBreakdown.critical} max={maxVuln} color="hsl(0 72% 58%)" />
+        <VulnBar label="High" count={repo.vulnBreakdown.high} max={maxVuln} color="hsl(38 92% 50%)" />
+        <VulnBar label="Medium" count={repo.vulnBreakdown.medium} max={maxVuln} color="hsl(210 80% 56%)" />
+        <VulnBar label="Low" count={repo.vulnBreakdown.low} max={maxVuln} color="hsl(142 60% 45%)" />
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between mt-3 pt-2 border-t border-[var(--border-dim)]">
-        <span className="text-[10px] font-mono" style={{ color: 'var(--text-dim)' }}>
-          Size: {repo.size}
-        </span>
-        <span className="text-[10px] font-mono" style={{ color: 'var(--text-dim)' }}>
-          Scanned {repo.lastScan}
-        </span>
-        <span className="text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--accent-cyan)' }}>
-          OPEN →
+      <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-border">
+        <span className="text-[10px] text-muted-foreground">{repo.size}</span>
+        <span className="text-[10px] text-muted-foreground">Scanned {repo.lastScan}</span>
+        <span className="text-[10px] text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+          Open →
         </span>
       </div>
     </motion.div>
@@ -152,40 +149,46 @@ const ReposPage = () => {
   const monitoringCount = allRepos.filter(r => r.status === 'MONITORING').length;
 
   return (
-    <div className="relative min-h-screen" style={{ background: 'var(--bg-base)' }}>
+    <div className="relative min-h-screen bg-background">
       <BackgroundAnimation />
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-10">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ease: [0.16, 1, 0.3, 1] }}
+          className="mb-8"
+        >
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <button onClick={() => navigate('/')} className="text-sm font-mono hover:text-cyber-cyan transition-colors" style={{ color: 'var(--text-dim)' }}>
-                ← Setup
+            <div className="flex items-center gap-4">
+              <button onClick={() => navigate('/')} className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+                <ArrowLeft className="w-4 h-4" />
+                Back
               </button>
-              <span style={{ color: 'var(--border-dim)' }}>|</span>
-              <h1 className="text-xl font-display font-bold text-foreground">All Repositories</h1>
+              <h1 className="text-xl font-semibold text-foreground">Repositories</h1>
             </div>
             <button
               onClick={() => navigate('/')}
-              className="px-4 py-2 rounded-lg text-xs font-mono uppercase tracking-wider
-                         border border-[var(--border-dim)] hover:border-[var(--border-glow)] transition-all"
-              style={{ color: 'var(--accent-cyan)' }}
+              className="px-3.5 py-2 rounded-lg text-xs font-medium
+                         bg-primary text-primary-foreground hover:brightness-110
+                         active:scale-[0.97] transition-all duration-150 flex items-center gap-1.5"
             >
-              + Add Repo
+              <Plus className="w-3.5 h-3.5" />
+              Add repo
             </button>
           </div>
 
           {/* Summary Stats */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-4 gap-3">
             {[
-              { label: 'Total Repos', value: allRepos.length, color: 'var(--accent-cyan)' },
-              { label: 'Monitoring', value: monitoringCount, color: 'var(--accent-green)' },
-              { label: 'Total Vulnerabilities', value: totalVulns, color: 'var(--accent-red)' },
-              { label: 'Avg Health', value: Math.round(allRepos.reduce((s, r) => s + r.healthScore, 0) / (allRepos.length || 1)), color: 'var(--accent-purple)' },
+              { label: 'Total', value: allRepos.length },
+              { label: 'Monitoring', value: monitoringCount },
+              { label: 'Vulnerabilities', value: totalVulns },
+              { label: 'Avg Health', value: Math.round(allRepos.reduce((s, r) => s + r.healthScore, 0) / (allRepos.length || 1)) },
             ].map(stat => (
-              <div key={stat.label} className="glass-card p-4 text-center">
-                <p className="text-2xl font-mono font-bold" style={{ color: stat.color }}>{stat.value}</p>
-                <p className="text-[10px] font-mono uppercase tracking-wider mt-1" style={{ color: 'var(--text-dim)' }}>{stat.label}</p>
+              <div key={stat.label} className="bg-card border border-border rounded-lg p-4 text-center">
+                <p className="text-2xl font-semibold text-foreground tabular-nums">{stat.value}</p>
+                <p className="text-[10px] text-muted-foreground mt-1">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -200,8 +203,8 @@ const ReposPage = () => {
 
         {allRepos.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-lg font-mono" style={{ color: 'var(--text-dim)' }}>No repositories connected</p>
-            <button onClick={() => navigate('/')} className="mt-4 text-sm font-mono" style={{ color: 'var(--accent-cyan)' }}>
+            <p className="text-lg text-muted-foreground">No repositories connected</p>
+            <button onClick={() => navigate('/')} className="mt-4 text-sm text-primary font-medium hover:underline">
               ← Connect your first repo
             </button>
           </div>

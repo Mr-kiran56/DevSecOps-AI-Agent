@@ -14,9 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Syne", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
-        body: ["DM Sans", "sans-serif"],
+        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        mono: ["Geist Mono", "ui-monospace", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -62,13 +61,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        cyber: {
-          cyan: "#00d4ff",
-          purple: "#7c3aed",
-          green: "#00ff88",
-          red: "#ff3366",
-          yellow: "#ffcc00",
-          orange: "#ff6b35",
+        status: {
+          success: "hsl(142 60% 45%)",
+          warning: "hsl(38 92% 50%)",
+          error: "hsl(0 72% 58%)",
+          info: "hsl(210 80% 56%)",
         },
       },
       borderRadius: {
