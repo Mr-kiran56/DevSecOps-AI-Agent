@@ -15,7 +15,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        mono: ["Geist Mono", "ui-monospace", "monospace"],
+        serif: ["Source Serif 4", "Georgia", "serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -62,10 +63,10 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         status: {
-          success: "hsl(142 60% 45%)",
-          warning: "hsl(38 92% 50%)",
-          error: "hsl(0 72% 58%)",
-          info: "hsl(210 80% 56%)",
+          success: "hsl(152 56% 38%)",
+          warning: "hsl(36 80% 50%)",
+          error: "hsl(0 65% 52%)",
+          info: "hsl(215 65% 50%)",
         },
       },
       borderRadius: {

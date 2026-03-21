@@ -34,31 +34,31 @@ const DashboardSidebar = () => {
   return (
     <aside className="w-[240px] min-h-screen flex flex-col border-r border-border bg-sidebar">
       {/* Active Repo */}
-      <div className="p-4 border-b border-border">
-        <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-2">
+      <div className="p-5 border-b border-border">
+        <p className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground mb-2">
           Active repository
         </p>
-        <p className="text-sm font-medium text-foreground truncate">{activeRepo?.name}</p>
-        <div className="flex items-center gap-2 mt-1.5">
-          <span className="text-[11px] font-mono px-1.5 py-0.5 rounded-md bg-secondary text-secondary-foreground">
+        <p className="text-sm font-semibold text-foreground truncate">{activeRepo?.name}</p>
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
             {activeRepo?.branch}
           </span>
           <StatusBadge status="ONLINE" />
         </div>
-        <div className="flex items-center gap-3 mt-2 text-[11px] text-muted-foreground">
+        <div className="flex items-center gap-3 mt-2.5 text-[11px] text-muted-foreground">
           <span className="text-status-error font-medium">{activeRepo?.vulnCount} vulns</span>
-          <span>·</span>
+          <span className="text-border">·</span>
           <span>{activeRepo?.lastScan}</span>
         </div>
       </div>
 
       {/* Recent Repos */}
-      <div className="p-4 border-b border-border">
+      <div className="p-5 border-b border-border">
         <button
           onClick={() => navigate('/repos')}
-          className="flex items-center justify-between w-full mb-2 group"
+          className="flex items-center justify-between w-full mb-2.5 group"
         >
-          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors">
+          <p className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors">
             Repos ({recentRepos.length})
           </p>
           <ArrowUpRight className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -71,9 +71,9 @@ const DashboardSidebar = () => {
               <button
                 key={repo.id}
                 onClick={() => handleSwitchRepo(repo)}
-                className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-left transition-all text-[12px]
+                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all text-[12px]
                   ${repo.id === activeRepo?.id
-                    ? 'bg-secondary text-foreground'
+                    ? 'bg-secondary text-foreground font-medium'
                     : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                   }`}
               >
@@ -81,12 +81,12 @@ const DashboardSidebar = () => {
                   className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                   style={{
                     background: repo.status === 'MONITORING'
-                      ? 'hsl(142 60% 45%)'
-                      : 'hsl(215 12% 48%)',
+                      ? 'hsl(152 56% 38%)'
+                      : 'hsl(30 6% 52%)',
                   }}
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium">{repo.name}</p>
+                  <p className="truncate">{repo.name}</p>
                   <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
                     <span>{repo.branch}</span>
                     <span className="text-status-error">{repo.vulnCount}v</span>
@@ -103,21 +103,21 @@ const DashboardSidebar = () => {
         {NAV_ITEMS.map(item => (
           <button
             key={item.id}
-            className="w-full flex items-center gap-2.5 px-4 py-2 text-[13px] text-muted-foreground
-                       hover:bg-secondary hover:text-foreground transition-colors text-left group"
+            className="w-full flex items-center gap-3 px-5 py-2.5 text-[13px] text-muted-foreground
+                       hover:bg-secondary hover:text-foreground transition-all duration-150 text-left group"
           >
-            <item.icon className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+            <item.icon className="w-[15px] h-[15px] text-muted-foreground group-hover:text-foreground transition-colors" />
             <span>{item.label}</span>
           </button>
         ))}
       </nav>
 
       {/* Agent Status */}
-      <div className="p-4 border-t border-border">
-        <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-3">
+      <div className="p-5 border-t border-border">
+        <p className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground mb-3">
           System status
         </p>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {[
             { label: 'LLM Engine', status: 'ACTIVE' as const },
             { label: 'RAG Memory', status: 'ENABLED' as const },
@@ -132,9 +132,9 @@ const DashboardSidebar = () => {
 
         <button
           onClick={() => { setActiveRepo(null); navigate('/'); }}
-          className="w-full mt-4 py-2 rounded-md text-[12px] font-medium
-                     text-muted-foreground bg-secondary hover:text-foreground
-                     active:scale-[0.98] transition-all duration-150
+          className="w-full mt-5 py-2.5 rounded-xl text-[12px] font-medium
+                     text-muted-foreground border border-border hover:bg-secondary hover:text-foreground
+                     active:scale-[0.98] transition-all duration-200
                      flex items-center justify-center gap-2"
         >
           <LogOut className="w-3.5 h-3.5" />

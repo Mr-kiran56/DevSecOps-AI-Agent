@@ -45,7 +45,7 @@ const BootSequence = ({ onComplete }: BootSequenceProps) => {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
     >
-      <div className="w-full max-w-sm space-y-3 px-6">
+      <div className="w-full max-w-sm space-y-4 px-6">
         {STEPS.map((step, i) => (
           <motion.div
             key={i}
@@ -61,7 +61,7 @@ const BootSequence = ({ onComplete }: BootSequenceProps) => {
             ) : (
               <div className="w-4 h-4 rounded-full border border-border flex-shrink-0" />
             )}
-            <span className={stepsComplete[i] ? 'text-foreground' : 'text-muted-foreground'}>
+            <span className={`${stepsComplete[i] ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
               {stepsComplete[i] ? step.done : step.loading}
             </span>
           </motion.div>
@@ -81,7 +81,7 @@ const BootSequence = ({ onComplete }: BootSequenceProps) => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ ease: [0.16, 1, 0.3, 1] }}
               >
-                <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+                <h1 className="text-3xl font-serif font-semibold tracking-tight text-foreground">
                   Ready to go
                 </h1>
                 <p className="mt-2 text-sm text-muted-foreground">

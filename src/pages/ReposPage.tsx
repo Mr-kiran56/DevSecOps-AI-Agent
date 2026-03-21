@@ -8,23 +8,23 @@ import StatusBadge from '@/components/shared/StatusBadge';
 import { ArrowLeft, Plus, GitBranch, Users, Star, GitPullRequest as PRIcon } from 'lucide-react';
 
 const LANG_COLORS: Record<string, string> = {
-  Python: 'hsl(210 80% 56%)',
-  TypeScript: 'hsl(210 90% 60%)',
-  Go: 'hsl(190 80% 45%)',
-  Rust: 'hsl(25 95% 58%)',
-  JavaScript: 'hsl(38 92% 50%)',
+  Python: 'hsl(215 65% 50%)',
+  TypeScript: 'hsl(215 75% 55%)',
+  Go: 'hsl(190 60% 42%)',
+  Rust: 'hsl(24 75% 48%)',
+  JavaScript: 'hsl(36 80% 50%)',
 };
 
 const HealthRing = ({ score }: { score: number }) => {
   const r = 18;
   const c = 2 * Math.PI * r;
   const offset = c - (score / 100) * c;
-  const color = score >= 85 ? 'hsl(142 60% 45%)' : score >= 60 ? 'hsl(38 92% 50%)' : 'hsl(0 72% 58%)';
+  const color = score >= 85 ? 'hsl(152 56% 38%)' : score >= 60 ? 'hsl(36 80% 50%)' : 'hsl(0 65% 52%)';
 
   return (
     <div className="relative w-12 h-12 flex items-center justify-center">
       <svg width="48" height="48" className="rotate-[-90deg]">
-        <circle cx="24" cy="24" r={r} fill="none" stroke="hsl(220 12% 14%)" strokeWidth="2.5" />
+        <circle cx="24" cy="24" r={r} fill="none" stroke="hsl(35 15% 90%)" strokeWidth="2.5" />
         <circle
           cx="24" cy="24" r={r} fill="none" stroke={color} strokeWidth="2.5"
           strokeDasharray={c} strokeDashoffset={offset} strokeLinecap="round"
@@ -60,8 +60,8 @@ const RepoCard = ({ repo, index, onSelect }: { repo: Repo; index: number; onSele
       initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
       animate={{ opacity: 1, y: 0, filter: 'blur(0)' }}
       transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-xl p-5 hover:border-primary/20 transition-all duration-200 cursor-pointer group
-                 shadow-sm hover:shadow-md hover:shadow-black/10"
+      className="bg-card border border-border rounded-2xl p-5 hover:border-primary/30 transition-all duration-200 cursor-pointer group
+                 hover:shadow-lg hover:shadow-foreground/[0.04]"
       onClick={() => onSelect(repo)}
     >
       {/* Header */}
@@ -69,8 +69,8 @@ const RepoCard = ({ repo, index, onSelect }: { repo: Repo; index: number; onSele
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full flex-shrink-0"
-              style={{ background: repo.status === 'MONITORING' ? 'hsl(142 60% 45%)' : 'hsl(215 12% 48%)' }} />
-            <h3 className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
+              style={{ background: repo.status === 'MONITORING' ? 'hsl(152 56% 38%)' : 'hsl(30 6% 52%)' }} />
+            <h3 className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
               {repo.name}
             </h3>
           </div>
@@ -81,19 +81,19 @@ const RepoCard = ({ repo, index, onSelect }: { repo: Repo; index: number; onSele
 
       {/* Tags Row */}
       <div className="flex flex-wrap items-center gap-1.5 mb-3">
-        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-secondary text-muted-foreground flex items-center gap-1">
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-secondary text-muted-foreground flex items-center gap-1">
           <GitBranch className="w-2.5 h-2.5" />
           {repo.branch}
         </span>
-        <span className="flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-secondary">
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: LANG_COLORS[repo.language] || 'hsl(215 12% 48%)' }} />
+        <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-secondary">
+          <span className="w-1.5 h-1.5 rounded-full" style={{ background: LANG_COLORS[repo.language] || 'hsl(30 6% 52%)' }} />
           <span className="text-muted-foreground">{repo.language}</span>
         </span>
         <StatusBadge status={repo.status === 'MONITORING' ? 'ACTIVE' : 'IDLE'} />
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-4 gap-3 mb-3 py-2.5 border-y border-border">
+      <div className="grid grid-cols-4 gap-3 mb-3 py-3 border-y border-border">
         {[
           { icon: GitBranch, label: 'Commits', value: repo.commits.toLocaleString() },
           { icon: Users, label: 'Team', value: repo.contributors },
@@ -112,14 +112,14 @@ const RepoCard = ({ repo, index, onSelect }: { repo: Repo; index: number; onSele
         <p className="text-[10px] font-medium text-muted-foreground">
           Vulnerabilities ({repo.vulnCount})
         </p>
-        <VulnBar label="Critical" count={repo.vulnBreakdown.critical} max={maxVuln} color="hsl(0 72% 58%)" />
-        <VulnBar label="High" count={repo.vulnBreakdown.high} max={maxVuln} color="hsl(38 92% 50%)" />
-        <VulnBar label="Medium" count={repo.vulnBreakdown.medium} max={maxVuln} color="hsl(210 80% 56%)" />
-        <VulnBar label="Low" count={repo.vulnBreakdown.low} max={maxVuln} color="hsl(142 60% 45%)" />
+        <VulnBar label="Critical" count={repo.vulnBreakdown.critical} max={maxVuln} color="hsl(0 65% 52%)" />
+        <VulnBar label="High" count={repo.vulnBreakdown.high} max={maxVuln} color="hsl(36 80% 50%)" />
+        <VulnBar label="Medium" count={repo.vulnBreakdown.medium} max={maxVuln} color="hsl(215 65% 50%)" />
+        <VulnBar label="Low" count={repo.vulnBreakdown.low} max={maxVuln} color="hsl(152 56% 38%)" />
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-border">
+      <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
         <span className="text-[10px] text-muted-foreground">{repo.size}</span>
         <span className="text-[10px] text-muted-foreground">Scanned {repo.lastScan}</span>
         <span className="text-[10px] text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
@@ -165,13 +165,13 @@ const ReposPage = () => {
                 <ArrowLeft className="w-4 h-4" />
                 Back
               </button>
-              <h1 className="text-xl font-semibold text-foreground">Repositories</h1>
+              <h1 className="text-xl font-serif font-semibold text-foreground">Repositories</h1>
             </div>
             <button
               onClick={() => navigate('/')}
-              className="px-3.5 py-2 rounded-lg text-xs font-medium
-                         bg-primary text-primary-foreground hover:brightness-110
-                         active:scale-[0.97] transition-all duration-150 flex items-center gap-1.5"
+              className="px-4 py-2.5 rounded-xl text-xs font-medium
+                         bg-foreground text-background hover:opacity-90
+                         active:scale-[0.97] transition-all duration-200 flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               Add repo
@@ -186,8 +186,8 @@ const ReposPage = () => {
               { label: 'Vulnerabilities', value: totalVulns },
               { label: 'Avg Health', value: Math.round(allRepos.reduce((s, r) => s + r.healthScore, 0) / (allRepos.length || 1)) },
             ].map(stat => (
-              <div key={stat.label} className="bg-card border border-border rounded-lg p-4 text-center">
-                <p className="text-2xl font-semibold text-foreground tabular-nums">{stat.value}</p>
+              <div key={stat.label} className="bg-card border border-border rounded-xl p-4 text-center">
+                <p className="text-2xl font-serif font-semibold text-foreground tabular-nums">{stat.value}</p>
                 <p className="text-[10px] text-muted-foreground mt-1">{stat.label}</p>
               </div>
             ))}
@@ -203,7 +203,7 @@ const ReposPage = () => {
 
         {allRepos.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-lg text-muted-foreground">No repositories connected</p>
+            <p className="text-lg text-muted-foreground font-serif">No repositories connected</p>
             <button onClick={() => navigate('/')} className="mt-4 text-sm text-primary font-medium hover:underline">
               ← Connect your first repo
             </button>

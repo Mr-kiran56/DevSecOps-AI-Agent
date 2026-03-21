@@ -39,9 +39,9 @@ const LiveFeed = () => {
 
   return (
     <div className="flex flex-col h-full bg-background">
-      <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-        <span className="text-sm font-medium text-foreground">Live Feed</span>
-        <div className="flex items-center gap-1 ml-auto">
+      <div className="px-5 py-4 border-b border-border flex items-center gap-2">
+        <span className="text-sm font-semibold text-foreground">Live Feed</span>
+        <div className="flex items-center gap-1.5 ml-auto">
           <Radio className="w-3 h-3 text-status-error animate-pulse-subtle" />
           <span className="text-[10px] font-mono text-status-error font-medium">LIVE</span>
         </div>
@@ -54,7 +54,7 @@ const LiveFeed = () => {
           return (
             <div
               key={event.id}
-              className={`flex items-start gap-3 px-4 py-2.5 border-b border-border
+              className={`flex items-start gap-3 px-5 py-3 border-b border-border
                          hover:bg-card transition-colors cursor-default
                          ${i === 0 ? 'animate-slide-in-top' : ''}`}
             >
