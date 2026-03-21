@@ -25,7 +25,7 @@ const dotMap: Record<string, string> = {
 };
 
 const StatusBadge = ({ status }: StatusBadgeProps) => (
-  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-mono font-medium tracking-wide ${colorMap[status] || 'bg-muted text-muted-foreground'}`}>
+  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium tracking-wide ${colorMap[status] || 'bg-muted text-muted-foreground'}`}>
     <span className={`w-1.5 h-1.5 rounded-full animate-pulse-subtle ${dotMap[status] || 'bg-muted-foreground'}`} />
     {status}
   </span>

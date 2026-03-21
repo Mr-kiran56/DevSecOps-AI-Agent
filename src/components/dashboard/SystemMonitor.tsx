@@ -4,7 +4,7 @@ import AnimatedCounter from '@/components/shared/AnimatedCounter';
 import StatusBadge from '@/components/shared/StatusBadge';
 
 const VulnBar = ({ label, value, max, color }: { label: string; value: number; max: number; color: string }) => (
-  <div className="flex items-center gap-2">
+  <div className="flex items-center gap-2.5">
     <span className="text-[11px] w-28 shrink-0 text-muted-foreground">{label}</span>
     <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
       <div
@@ -23,7 +23,7 @@ const CircularProgress = ({ value, color, size = 56 }: { value: number; color: s
   return (
     <div className="relative" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="transform -rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="hsl(220 12% 14%)" strokeWidth={3} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="hsl(35 15% 90%)" strokeWidth={3} />
         <circle
           cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={3}
           strokeDasharray={circumference} strokeDashoffset={offset}
@@ -31,7 +31,7 @@ const CircularProgress = ({ value, color, size = 56 }: { value: number; color: s
           className="transition-all duration-1000"
         />
       </svg>
-      <span className="absolute inset-0 flex items-center justify-center text-xs font-mono font-medium text-foreground">{value}</span>
+      <span className="absolute inset-0 flex items-center justify-center text-xs font-mono font-semibold text-foreground">{value}</span>
     </div>
   );
 };
@@ -50,55 +50,55 @@ const SystemMonitor = () => {
   const maxVuln = Math.max(...Object.values(s.breakdown));
 
   return (
-    <div className="h-full overflow-y-auto p-4 space-y-4 bg-background">
-      <h2 className="text-sm font-medium text-foreground">System Monitor</h2>
+    <div className="h-full overflow-y-auto p-5 space-y-4 bg-background">
+      <h2 className="text-sm font-semibold text-foreground">System Monitor</h2>
 
       {/* Vuln Breakdown */}
-      <div className="bg-card border border-border rounded-lg p-4">
-        <div className="flex items-center justify-between mb-3">
+      <div className="bg-card border border-border rounded-xl p-5">
+        <div className="flex items-center justify-between mb-4">
           <span className="text-xs font-medium text-muted-foreground">Security Analysis</span>
           <AnimatedCounter target={s.totalVulns} className="text-lg font-mono font-semibold text-foreground" />
         </div>
-        <div className="space-y-2">
-          <VulnBar label="SQL Injection" value={s.breakdown.sqlInjection} max={maxVuln} color="hsl(0 72% 58%)" />
-          <VulnBar label="Cmd Injection" value={s.breakdown.commandInjection} max={maxVuln} color="hsl(25 95% 58%)" />
-          <VulnBar label="Hardcoded Secrets" value={s.breakdown.hardcodedSecrets} max={maxVuln} color="hsl(38 92% 50%)" />
-          <VulnBar label="XSS" value={s.breakdown.xss} max={maxVuln} color="hsl(210 80% 56%)" />
-          <VulnBar label="Path Traversal" value={s.breakdown.pathTraversal} max={maxVuln} color="hsl(142 60% 45%)" />
+        <div className="space-y-2.5">
+          <VulnBar label="SQL Injection" value={s.breakdown.sqlInjection} max={maxVuln} color="hsl(0 65% 52%)" />
+          <VulnBar label="Cmd Injection" value={s.breakdown.commandInjection} max={maxVuln} color="hsl(24 75% 48%)" />
+          <VulnBar label="Hardcoded Secrets" value={s.breakdown.hardcodedSecrets} max={maxVuln} color="hsl(36 80% 50%)" />
+          <VulnBar label="XSS" value={s.breakdown.xss} max={maxVuln} color="hsl(215 65% 50%)" />
+          <VulnBar label="Path Traversal" value={s.breakdown.pathTraversal} max={maxVuln} color="hsl(152 56% 38%)" />
         </div>
       </div>
 
       {/* Vector Memory */}
-      <div className="bg-card border border-border rounded-lg p-4">
+      <div className="bg-card border border-border rounded-xl p-5">
         <span className="text-xs font-medium text-muted-foreground">Vector Memory</span>
-        <div className="mt-3 flex items-center gap-4">
-          <CircularProgress value={s.semanticMatchRate} color="hsl(210 80% 56%)" />
-          <div className="space-y-1 text-[11px] text-muted-foreground">
-            <div>Embeddings: <AnimatedCounter target={s.vectorCount} className="font-mono text-foreground" /></div>
-            <div>Retrieval Hits: <AnimatedCounter target={s.memoryHits} className="font-mono text-foreground" /></div>
-            <div>Match Rate: <AnimatedCounter target={s.semanticMatchRate} suffix="%" className="font-mono text-status-success" /></div>
+        <div className="mt-4 flex items-center gap-4">
+          <CircularProgress value={s.semanticMatchRate} color="hsl(215 65% 50%)" />
+          <div className="space-y-1.5 text-[11px] text-muted-foreground">
+            <div>Embeddings: <AnimatedCounter target={s.vectorCount} className="font-mono text-foreground font-medium" /></div>
+            <div>Retrieval Hits: <AnimatedCounter target={s.memoryHits} className="font-mono text-foreground font-medium" /></div>
+            <div>Match Rate: <AnimatedCounter target={s.semanticMatchRate} suffix="%" className="font-mono text-status-success font-medium" /></div>
           </div>
         </div>
       </div>
 
       {/* Patch Performance */}
-      <div className="bg-card border border-border rounded-lg p-4">
+      <div className="bg-card border border-border rounded-xl p-5">
         <span className="text-xs font-medium text-muted-foreground">Patch Performance</span>
-        <div className="mt-3 flex items-center gap-4">
-          <CircularProgress value={s.fixSuccessRate} color="hsl(142 60% 45%)" />
-          <div className="space-y-1 text-[11px] text-muted-foreground">
-            <div>Fix Rate: <AnimatedCounter target={s.fixSuccessRate} suffix="%" className="font-mono text-status-success" /></div>
-            <div>Avg Retries: <AnimatedCounter target={s.avgRetries} decimals={1} className="font-mono text-foreground" /></div>
-            <div>Verified: <AnimatedCounter target={s.verifiedFixes} className="font-mono text-foreground" /></div>
-            <div>Manual: <AnimatedCounter target={s.manualReviews} className="font-mono text-status-warning" /></div>
+        <div className="mt-4 flex items-center gap-4">
+          <CircularProgress value={s.fixSuccessRate} color="hsl(152 56% 38%)" />
+          <div className="space-y-1.5 text-[11px] text-muted-foreground">
+            <div>Fix Rate: <AnimatedCounter target={s.fixSuccessRate} suffix="%" className="font-mono text-status-success font-medium" /></div>
+            <div>Avg Retries: <AnimatedCounter target={s.avgRetries} decimals={1} className="font-mono text-foreground font-medium" /></div>
+            <div>Verified: <AnimatedCounter target={s.verifiedFixes} className="font-mono text-foreground font-medium" /></div>
+            <div>Manual: <AnimatedCounter target={s.manualReviews} className="font-mono text-status-warning font-medium" /></div>
           </div>
         </div>
       </div>
 
       {/* Agent Status */}
-      <div className="bg-card border border-border rounded-lg p-4">
+      <div className="bg-card border border-border rounded-xl p-5">
         <span className="text-xs font-medium text-muted-foreground">Agent Status</span>
-        <div className="mt-3 space-y-2">
+        <div className="mt-4 space-y-2.5">
           {[
             { label: 'LLM Engine', status: 'ACTIVE' as const },
             { label: 'LangGraph Nodes', status: 'RUNNING' as const },
@@ -114,15 +114,15 @@ const SystemMonitor = () => {
       </div>
 
       {/* Docker Sandbox */}
-      <div className="bg-card border border-border rounded-lg p-4">
+      <div className="bg-card border border-border rounded-xl p-5">
         <span className="text-xs font-medium text-muted-foreground">Sandbox</span>
-        <div className="mt-3 space-y-3">
+        <div className="mt-4 space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-[11px] text-muted-foreground">Container</span>
             <StatusBadge status="RUNNING" />
           </div>
           <div>
-            <div className="flex justify-between text-[10px] mb-1">
+            <div className="flex justify-between text-[10px] mb-1.5">
               <span className="text-muted-foreground">CPU</span>
               <span className="font-mono text-muted-foreground tabular-nums">{Math.round(cpu)}%</span>
             </div>
@@ -131,7 +131,7 @@ const SystemMonitor = () => {
             </div>
           </div>
           <div>
-            <div className="flex justify-between text-[10px] mb-1">
+            <div className="flex justify-between text-[10px] mb-1.5">
               <span className="text-muted-foreground">Memory</span>
               <span className="font-mono text-muted-foreground tabular-nums">410 / 512 MB</span>
             </div>
@@ -143,9 +143,9 @@ const SystemMonitor = () => {
       </div>
 
       {/* ML Shield */}
-      <div className="bg-card border border-border rounded-lg p-4">
+      <div className="bg-card border border-border rounded-xl p-5">
         <span className="text-xs font-medium text-muted-foreground">ML Shield</span>
-        <div className="mt-3 space-y-2">
+        <div className="mt-4 space-y-2.5">
           <div className="flex items-center justify-between">
             <span className="text-[11px] text-muted-foreground">Runtime Behavior</span>
             <span className="text-xs font-mono font-medium text-status-success">NORMAL</span>

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRepo } from '@/context/RepoContext';
 import BackgroundAnimation from '@/components/shared/BackgroundAnimation';
 import BootSequence from '@/components/setup/BootSequence';
-import { Shield, GitBranch, ArrowRight } from 'lucide-react';
+import { Shield, ArrowRight } from 'lucide-react';
 import type { Repo } from '@/data/mockData';
 
 const SetupPage = () => {
@@ -70,10 +70,10 @@ const SetupPage = () => {
   };
 
   const inputClass = (field: string) =>
-    `w-full px-3.5 py-2.5 rounded-lg text-sm transition-all duration-150 outline-none
-     bg-secondary border ${errors[field] ? 'border-destructive ring-2 ring-destructive/20' : 'border-border'}
+    `w-full px-4 py-3 rounded-xl text-sm transition-all duration-200 outline-none
+     bg-background border ${errors[field] ? 'border-destructive ring-2 ring-destructive/20' : 'border-border'}
      text-foreground placeholder:text-muted-foreground
-     focus:border-primary focus:ring-2 focus:ring-primary/20`;
+     focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:shadow-sm`;
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-background">
@@ -84,21 +84,21 @@ const SetupPage = () => {
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
+        initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
         animate={{ opacity: 1, y: 0, filter: 'blur(0)' }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 w-full max-w-md mx-4"
       >
-        <div className="bg-card border border-border rounded-xl p-8 shadow-2xl shadow-black/20">
+        <div className="bg-card border border-border rounded-2xl p-8 shadow-xl shadow-foreground/[0.03]">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 mb-4">
-              <Shield className="w-5 h-5 text-primary" />
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 mb-5">
+              <Shield className="w-6 h-6 text-primary" />
             </div>
-            <h1 className="text-xl font-semibold tracking-tight text-foreground">
+            <h1 className="text-2xl font-serif font-semibold tracking-tight text-foreground">
               DevSecOps Agent
             </h1>
-            <p className="text-sm text-muted-foreground mt-1.5">
+            <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
               Connect a repository to begin monitoring
             </p>
           </div>
@@ -106,7 +106,7 @@ const SetupPage = () => {
           {/* Form */}
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+              <label className="block text-xs font-medium text-foreground mb-2">
                 Repository URL
               </label>
               <input
@@ -118,7 +118,7 @@ const SetupPage = () => {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                <label className="block text-xs font-medium text-foreground mb-2">
                   Repository name
                 </label>
                 <input
@@ -129,7 +129,7 @@ const SetupPage = () => {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                <label className="block text-xs font-medium text-foreground mb-2">
                   Branch
                 </label>
                 <input
@@ -142,7 +142,7 @@ const SetupPage = () => {
             </div>
 
             {/* Toggles */}
-            <div className="flex gap-6 pt-1">
+            <div className="flex gap-6 pt-2">
               {[
                 { label: 'ML Shield', value: mlShield, onChange: () => setMlShield(!mlShield) },
                 { label: 'RAG Memory', value: ragMemory, onChange: () => setRagMemory(!ragMemory) },
@@ -151,11 +151,11 @@ const SetupPage = () => {
                   <button
                     type="button"
                     onClick={toggle.onChange}
-                    className={`w-9 h-5 rounded-full transition-colors relative ${toggle.value ? 'bg-primary' : 'bg-muted'}`}
+                    className={`w-10 h-[22px] rounded-full transition-all duration-200 relative ${toggle.value ? 'bg-primary' : 'bg-border'}`}
                   >
-                    <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all duration-200 ${toggle.value ? 'left-[18px]' : 'left-0.5'}`} />
+                    <span className={`absolute top-[3px] w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-200 ${toggle.value ? 'left-[22px]' : 'left-[3px]'}`} />
                   </button>
-                  {toggle.label}
+                  <span className="text-foreground text-[13px]">{toggle.label}</span>
                 </label>
               ))}
             </div>
@@ -163,10 +163,10 @@ const SetupPage = () => {
             {/* Start Button */}
             <button
               onClick={handleStart}
-              className="w-full mt-2 py-2.5 rounded-lg font-medium text-sm
-                         bg-primary text-primary-foreground
-                         hover:brightness-110 active:scale-[0.98] transition-all duration-150
-                         flex items-center justify-center gap-2"
+              className="w-full mt-3 py-3 rounded-xl font-medium text-sm
+                         bg-foreground text-background
+                         hover:opacity-90 active:scale-[0.98] transition-all duration-200
+                         flex items-center justify-center gap-2 shadow-sm"
             >
               Start monitoring
               <ArrowRight className="w-4 h-4" />
@@ -180,9 +180,9 @@ const SetupPage = () => {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-5"
+            className="mt-6"
           >
-            <h3 className="text-xs font-medium text-muted-foreground mb-2.5">
+            <h3 className="text-xs font-medium text-muted-foreground mb-3">
               Recent repositories
             </h3>
             <div className="flex gap-2 flex-wrap">
@@ -190,8 +190,8 @@ const SetupPage = () => {
                 <button
                   key={repo.id}
                   onClick={() => handleRecentClick(repo)}
-                  className="bg-card border border-border rounded-lg px-3 py-1.5 text-xs font-mono flex items-center gap-2
-                             hover:border-primary/30 hover:bg-secondary active:scale-[0.97] transition-all duration-150"
+                  className="bg-card border border-border rounded-xl px-3.5 py-2 text-xs font-mono flex items-center gap-2
+                             hover:border-primary/30 hover:shadow-sm active:scale-[0.97] transition-all duration-200"
                 >
                   <span className={`w-1.5 h-1.5 rounded-full ${repo.status === 'MONITORING' ? 'bg-status-success animate-pulse-subtle' : 'bg-status-warning'}`} />
                   <span className="text-foreground">{repo.name}</span>
